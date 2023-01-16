@@ -11,11 +11,15 @@ const { developmentChains } = require("../../helper-hardhat-config")
 
           beforeEach(async () => {
               accounts = await ethers.getSigners() // could also do with getNamedAccounts
-              deployer = accounts[0]
+              deployer = accounts[0] // it seems that when we getSigners() we then have access to the accounts variable to get accounts[0] and accounts[1] ect
               user = accounts[1]
+              // can also do it like this 
+              // deployer = (await getNameAccounts()).deployer // (can use if it is one of the options in the hardhat config)
+              // user =  (await getNamedAccounts()).user // 
+
               await deployments.fixture(["all"])
               nftMarketplaceContract = await ethers.getContract("NftMarketplace")
-              nftMarketplace = nftMarketplaceContract.connect(deployer)
+              nftMarketplace = nftMarketplaceContract.connect(deployer) // connect is stating which contract we should use to transact
               basicNftContract = await ethers.getContract("BasicNft")
               basicNft = await basicNftContract.connect(deployer)
               await basicNft.mintNft()
